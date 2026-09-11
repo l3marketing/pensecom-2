@@ -86,7 +86,7 @@ function Typewriter() {
   return (
     <span className="inline-flex min-h-[1.5em] items-center">
       {text}
-      <span className="animate-pulse ml-1 text-primary">|</span>
+      <span className="animate-pulse ml-1 text-white">|</span>
     </span>
   );
 }
@@ -295,38 +295,34 @@ function HomePage() {
   return (
     <SiteLayout>
       {/* HERO */}
-      <section className="relative flex min-h-[85vh] lg:min-h-[90vh] items-center overflow-hidden bg-white pt-24">
+      <section className="relative flex min-h-[85vh] lg:min-h-[90vh] items-center overflow-hidden bg-primary pt-24">
         
-        {/* Bloco Laranja (Primary) grande e na diagonal atrás da mulher */}
-        <div className="absolute right-0 top-0 bottom-0 w-full lg:w-[48%] z-0 bg-primary overflow-hidden" 
-             style={{ clipPath: "polygon(15% 0, 100% 0, 100% 100%, 0% 100%)" }}>
-             {/* Geometria/Corte em branco para charme */}
-             <div className="absolute top-[15%] -left-[10%] h-[150%] w-[40px] rotate-12 bg-white/20"></div>
-             <div className="absolute bottom-[20%] -right-5 h-64 w-32 rotate-45 bg-white/10"></div>
-        </div>
+        {/* Geometria/Corte em branco para charme */}
+        <div className="absolute top-[15%] left-[40%] h-[150%] w-[40px] rotate-12 bg-white/5 pointer-events-none"></div>
+        <div className="absolute bottom-[20%] right-[-5%] h-64 w-32 rotate-45 bg-white/5 pointer-events-none"></div>
 
         <div className="relative z-10 mx-auto w-full max-w-7xl px-4 py-16 sm:px-6 lg:px-8">
           <div className="grid lg:grid-cols-2 gap-12 items-center">
             
             {/* Texto na Esquerda */}
             <div className="max-w-2xl relative z-20">
-              <h1 className="text-4xl font-extrabold leading-[1.1] tracking-tight text-slate-900 sm:text-5xl lg:text-[4.5rem] min-h-[4em] sm:min-h-[3.5em] lg:min-h-[3.5em] flex items-start drop-shadow-sm">
+              <h1 className="text-4xl font-extrabold leading-[1.1] tracking-tight text-white sm:text-5xl lg:text-[4.5rem] min-h-[4em] sm:min-h-[3.5em] lg:min-h-[3.5em] flex items-start drop-shadow-sm">
                 <Typewriter />
               </h1>
-              <p className="mt-8 text-lg text-slate-700 sm:text-xl font-medium max-w-lg">
+              <p className="mt-8 text-lg text-white/90 sm:text-xl font-medium max-w-lg">
                 Apoiamos empresas a crescerem com gente: do RH operacional ao
                 estratégico, com soluções flexíveis, senioridade e método.
               </p>
               <div className="mt-10 flex flex-wrap gap-4">
                 <Link
                   to="/contato"
-                  className="inline-flex items-center gap-2 rounded-full bg-primary px-8 py-4 text-sm font-bold text-primary-foreground shadow-lg transition hover:bg-primary/90 hover:scale-105"
+                  className="inline-flex items-center gap-2 rounded-full bg-white px-8 py-4 text-sm font-bold text-primary shadow-lg transition hover:bg-white/90 hover:scale-105"
                 >
                   Fale com um consultor <ArrowRight className="h-4 w-4" />
                 </Link>
                 <Link
                   to="/servicos"
-                  className="inline-flex items-center gap-2 rounded-full border-2 border-primary/20 bg-white/80 backdrop-blur-sm px-8 py-4 text-sm font-bold text-primary transition hover:bg-primary/5 hover:scale-105"
+                  className="inline-flex items-center gap-2 rounded-full border-2 border-white/30 bg-white/10 backdrop-blur-sm px-8 py-4 text-sm font-bold text-white transition hover:bg-white/20 hover:scale-105"
                 >
                   Ver serviços
                 </Link>
