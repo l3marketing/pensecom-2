@@ -295,44 +295,66 @@ function HomePage() {
   return (
     <SiteLayout>
       {/* HERO */}
-      <section className="relative flex min-h-[85vh] items-center overflow-hidden bg-black pt-16">
-        {/* Background Image */}
-        <div className="absolute inset-0 z-0">
-          <img
-            src="https://images.unsplash.com/photo-1522071820081-009f0129c71c?q=80&w=2850&auto=format&fit=crop"
-            alt="Equipe trabalhando"
-            className="h-full w-full object-cover"
-          />
+      <section className="relative flex min-h-[85vh] lg:min-h-[90vh] items-center overflow-hidden bg-[#252440] pt-24">
+        
+        {/* Fundo Misto (Azul e Laranja com recortes) */}
+        {/* Bloco Laranja (Primary) grande e na diagonal */}
+        <div className="absolute right-0 top-0 bottom-0 w-full lg:w-[55%] z-0 bg-primary" 
+             style={{ clipPath: "polygon(15% 0, 100% 0, 100% 100%, -10% 100%)" }}>
         </div>
         
-        {/* Overlays */}
-        <div className="absolute inset-0 z-0 bg-primary/60 mix-blend-multiply"></div>
-        <div className="absolute inset-0 z-0 bg-gradient-to-r from-black/80 via-black/40 to-transparent"></div>
+        {/* Degradê para o branco no lado esquerdo conforme pedido para ajudar na leitura */}
+        <div className="absolute left-0 top-0 bottom-0 w-full lg:w-[60%] z-0 bg-gradient-to-r from-white via-white/90 to-transparent mix-blend-overlay opacity-10"></div>
+        <div className="absolute left-0 top-0 bottom-0 w-full lg:w-[60%] z-0 bg-gradient-to-r from-[#252440] via-[#252440]/90 to-transparent"></div>
 
         <div className="relative z-10 mx-auto w-full max-w-7xl px-4 py-16 sm:px-6 lg:px-8">
-          <div className="max-w-2xl">
-            <h1 className="text-4xl font-extrabold leading-[1.1] tracking-tight text-white sm:text-5xl lg:text-6xl">
-              <Typewriter />
-            </h1>
-            <p className="mt-6 text-lg text-white/90 sm:text-xl">
-              Apoiamos empresas a crescerem com gente: do RH operacional ao
-              estratégico, com soluções flexíveis, senioridade e método.
-            </p>
-            <div className="mt-8 flex flex-wrap gap-4">
-              <Link
-                to="/contato"
-                className="inline-flex items-center gap-2 rounded-full bg-white px-6 py-3 text-sm font-bold text-primary shadow-sm transition hover:bg-white/90"
-              >
-                Fale com um consultor <ArrowRight className="h-4 w-4" />
-              </Link>
-              <Link
-                to="/servicos"
-                className="inline-flex items-center gap-2 rounded-full border border-white bg-transparent px-6 py-3 text-sm font-bold text-white transition hover:bg-white/10"
-              >
-                Ver serviços
-              </Link>
+          <div className="grid lg:grid-cols-2 gap-12 items-center">
+            
+            {/* Texto na Esquerda */}
+            <div className="max-w-2xl relative z-20">
+              <h1 className="text-4xl font-extrabold leading-[1.1] tracking-tight text-white sm:text-5xl lg:text-[4.5rem] min-h-[4em] sm:min-h-[3.5em] lg:min-h-[3.5em] flex items-start drop-shadow-md">
+                <Typewriter />
+              </h1>
+              <p className="mt-8 text-lg text-white/95 sm:text-xl font-medium max-w-lg drop-shadow">
+                Apoiamos empresas a crescerem com gente: do RH operacional ao
+                estratégico, com soluções flexíveis, senioridade e método.
+              </p>
+              <div className="mt-10 flex flex-wrap gap-4">
+                <Link
+                  to="/contato"
+                  className="inline-flex items-center gap-2 rounded-full bg-white px-8 py-4 text-sm font-bold text-primary shadow-lg transition hover:bg-gray-100 hover:scale-105"
+                >
+                  Fale com um consultor <ArrowRight className="h-4 w-4" />
+                </Link>
+                <Link
+                  to="/servicos"
+                  className="inline-flex items-center gap-2 rounded-full border-2 border-white bg-[#252440]/40 backdrop-blur-sm px-8 py-4 text-sm font-bold text-white transition hover:bg-white/20 hover:scale-105"
+                >
+                  Ver serviços
+                </Link>
+              </div>
+            </div>
+
+            {/* Imagem da mulher sobreposta criando forte efeito 3D/editorial */}
+            <div className="relative z-20 hidden lg:flex justify-end items-end h-full">
+              {/* Sombra criativa no fundo para destacar a modelo */}
+              <div className="absolute -inset-10 bg-black/20 rounded-full blur-3xl z-0 transform translate-y-10 translate-x-10"></div>
+              <img 
+                src="/muhlher-transparente-hero.png" 
+                alt="Profissional de RH Pensecom" 
+                className="relative z-10 w-full max-w-[600px] object-contain drop-shadow-2xl transform scale-110 translate-y-8 origin-bottom pointer-events-none"
+              />
             </div>
           </div>
+        </div>
+        
+        {/* Mobile image */}
+        <div className="lg:hidden absolute bottom-0 right-[-10%] z-0 opacity-50 pointer-events-none">
+           <img 
+              src="/muhlher-transparente-hero.png" 
+              alt="Profissional de RH Pensecom" 
+              className="w-[350px] object-contain drop-shadow-2xl"
+            />
         </div>
       </section>
 
