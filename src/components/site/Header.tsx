@@ -1,4 +1,5 @@
-import { Link } from "@tanstack/react-router";
+import { Link, useRouterState } from "@tanstack/react-router";
+import { cn } from "@/lib/utils";
 import { useState } from "react";
 import { Menu, X } from "lucide-react";
 import logo from "@/assets/logo-pensecom-laranja.png.asset.json";
@@ -15,11 +16,19 @@ const nav = [
 
 export function Header() {
   const [open, setOpen] = useState(false);
+  const router = useRouterState();
+  const isHome = router.location.pathname === "/";
+
   return (
-    <header className="sticky top-0 z-40 border-b border-border bg-background/85 backdrop-blur">
+    <header className={cn(
+      "z-40 w-full transition-colors",
+      isHome 
+        ? "absolute top-0 left-0 bg-transparent border-none"
+        : "sticky top-0 border-b border-border bg-background/85 backdrop-blur"
+    )}>
       <div className="mx-auto flex h-16 max-w-7xl items-center justify-between px-4 sm:px-6 lg:px-8">
         <Link to="/" className="flex items-center gap-2" aria-label="PENSECOM">
-          <img src={logo.url} alt="PENSECOM" className="h-8 w-auto" />
+          <img src={logo.url} alt="PENSECOM" className={cn("h-8 w-auto", isHome && "brightness-0 invert")} />
         </Link>
 
         <nav className="hidden items-center gap-7 md:flex">
@@ -27,8 +36,8 @@ export function Header() {
             <Link
               key={item.to}
               to={item.to}
-              className="text-sm font-medium text-foreground/70 transition-colors hover:text-foreground"
-              activeProps={{ className: "text-foreground" }}
+              className={cn("text-sm font-medium transition-colors hover:opacity-100", isHome ? "text-white/80 hover:text-white" : "text-foreground/70 hover:text-foreground")}
+              activeProps={{ className: isHome ? "text-white" : "text-foreground" }}
               activeOptions={{ exact: item.to === "/" }}
             >
               {item.label}
@@ -38,7 +47,7 @@ export function Header() {
             href={BLOG_URL}
             target="_blank"
             rel="noopener noreferrer"
-            className="text-sm font-medium text-foreground/70 transition-colors hover:text-foreground"
+            className={cn("text-sm font-medium transition-colors hover:opacity-100", isHome ? "text-white/80 hover:text-white" : "text-foreground/70 hover:text-foreground")}
           >
             Blog
           </a>
@@ -60,7 +69,7 @@ export function Header() {
         </div>
 
         <button
-          className="md:hidden inline-flex h-10 w-10 items-center justify-center rounded-lg text-foreground"
+          className={cn("md:hidden inline-flex h-10 w-10 items-center justify-center rounded-lg", isHome ? "text-white" : "text-foreground")}
           onClick={() => setOpen((v) => !v)}
           aria-label="Abrir menu"
         >

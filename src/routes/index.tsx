@@ -47,6 +47,50 @@ const clientLogos = [
   { src: client7.url, alt: "JHM Motores" },
 ];
 
+function Typewriter() {
+  const texts = [
+    "Empresas são feitas de pessoas.",
+    "Pense com o coração.",
+    "Pensecom."
+  ];
+  const [text, setText] = useState("");
+  const [isDeleting, setIsDeleting] = useState(false);
+  const [loopNum, setLoopNum] = useState(0);
+
+  useEffect(() => {
+    let timeoutId: NodeJS.Timeout;
+    const handleType = () => {
+      const currentText = texts[loopNum % texts.length];
+      if (isDeleting) {
+        setText(currentText.substring(0, text.length - 1));
+      } else {
+        setText(currentText.substring(0, text.length + 1));
+      }
+
+      let typeSpeed = isDeleting ? 30 : 70;
+
+      if (!isDeleting && text === currentText) {
+        typeSpeed = 1500;
+        setIsDeleting(true);
+      } else if (isDeleting && text === "") {
+        setIsDeleting(false);
+        setLoopNum(loopNum + 1);
+        typeSpeed = 300;
+      }
+      timeoutId = setTimeout(handleType, typeSpeed);
+    };
+    timeoutId = setTimeout(handleType, 50);
+    return () => clearTimeout(timeoutId);
+  }, [text, isDeleting, loopNum]);
+
+  return (
+    <span className="inline-flex min-h-[1.5em] items-center">
+      {text}
+      <span className="animate-pulse ml-1 text-primary">|</span>
+    </span>
+  );
+}
+
 export const Route = createFileRoute("/")({
   head: () => ({
     meta: [
@@ -251,62 +295,45 @@ function HomePage() {
   return (
     <SiteLayout>
       {/* HERO */}
-      <section className="relative overflow-hidden bg-background">
-        <div className="pointer-events-none absolute inset-y-0 right-0 hidden w-1/2 lg:block">
+      <section className="relative flex min-h-[85vh] items-center overflow-hidden bg-black pt-16">
+        {/* Background Image */}
+        <div className="absolute inset-0 z-0">
           <img
-            src={heroImg.url}
-            alt="Equipe diversa em sobreposição artística"
+            src="https://images.unsplash.com/photo-1522071820081-009f0129c71c?q=80&w=2850&auto=format&fit=crop"
+            alt="Equipe trabalhando"
             className="h-full w-full object-cover"
           />
         </div>
-        <div className="relative mx-auto grid max-w-7xl gap-12 px-4 py-16 sm:px-6 lg:grid-cols-2 lg:gap-16 lg:px-8 lg:py-24">
-          <div className="flex flex-col justify-center">
-            <span className="inline-flex w-fit items-center rounded-full bg-accent px-3 py-1 text-xs font-semibold text-accent-foreground">
-              Consultoria de RH 100% remota
-            </span>
-            <h1 className="mt-5 text-4xl font-extrabold leading-[1.05] tracking-tight text-foreground sm:text-5xl lg:text-6xl">
-              Empresas são feitas de{" "}
-              <span className="text-primary">Pessoas</span>.
+        
+        {/* Overlays */}
+        <div className="absolute inset-0 z-0 bg-primary/60 mix-blend-multiply"></div>
+        <div className="absolute inset-0 z-0 bg-gradient-to-r from-black/80 via-black/40 to-transparent"></div>
+
+        <div className="relative z-10 mx-auto w-full max-w-7xl px-4 py-16 sm:px-6 lg:px-8">
+          <div className="max-w-2xl">
+            <h1 className="text-4xl font-extrabold leading-[1.1] tracking-tight text-white sm:text-5xl lg:text-6xl">
+              <Typewriter />
             </h1>
-            <p className="mt-6 max-w-xl text-lg text-muted-foreground">
+            <p className="mt-6 text-lg text-white/90 sm:text-xl">
               Apoiamos empresas a crescerem com gente: do RH operacional ao
-              estratégico, com soluções flexíveis, senioridade e método.&nbsp;
+              estratégico, com soluções flexíveis, senioridade e método.
             </p>
-            <div className="mt-8 flex flex-wrap gap-3">
+            <div className="mt-8 flex flex-wrap gap-4">
               <Link
                 to="/contato"
-                className="inline-flex items-center gap-2 rounded-full bg-primary px-6 py-3 text-sm font-semibold text-primary-foreground shadow-sm transition hover:bg-primary/90 hover:shadow-md"
+                className="inline-flex items-center gap-2 rounded-full bg-white px-6 py-3 text-sm font-bold text-primary shadow-sm transition hover:bg-white/90"
               >
                 Fale com um consultor <ArrowRight className="h-4 w-4" />
               </Link>
               <Link
                 to="/servicos"
-                className="inline-flex items-center gap-2 rounded-full border border-border bg-background px-6 py-3 text-sm font-semibold text-foreground transition hover:border-primary hover:text-primary"
+                className="inline-flex items-center gap-2 rounded-full border border-white bg-transparent px-6 py-3 text-sm font-bold text-white transition hover:bg-white/10"
               >
                 Ver serviços
               </Link>
             </div>
           </div>
-          {/* Mobile image */}
-          <div className="relative lg:hidden">
-            <img
-              src={heroImg.url}
-              alt="Equipe diversa em sobreposição artística"
-              className="w-full rounded-3xl object-cover shadow-xl ring-1 ring-border"
-            />
-            <img
-              src={logoIcon.url}
-              alt="PENSECOM"
-              className="absolute -bottom-6 left-1/2 h-16 w-16 -translate-x-1/2 drop-shadow-xl"
-            />
-          </div>
-          <div className="hidden lg:block" />
         </div>
-        <img
-          src={logoIcon.url}
-          alt="PENSECOM"
-          className="pointer-events-none absolute left-1/2 top-[75%] hidden h-24 w-24 -translate-x-1/2 -translate-y-1/2 drop-shadow-2xl lg:block xl:h-28 xl:w-28"
-        />
       </section>
 
       {/* STATS */}
