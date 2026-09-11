@@ -295,40 +295,38 @@ function HomePage() {
   return (
     <SiteLayout>
       {/* HERO */}
-      <section className="relative flex min-h-[85vh] lg:min-h-[90vh] items-center overflow-hidden bg-[#252440] pt-24">
+      <section className="relative flex min-h-[85vh] lg:min-h-[90vh] items-center overflow-hidden bg-white pt-24">
         
-        {/* Fundo Misto (Azul e Laranja com recortes) */}
-        {/* Bloco Laranja (Primary) grande e na diagonal */}
-        <div className="absolute right-0 top-0 bottom-0 w-full lg:w-[55%] z-0 bg-primary" 
-             style={{ clipPath: "polygon(15% 0, 100% 0, 100% 100%, -10% 100%)" }}>
+        {/* Bloco Laranja (Primary) grande e na diagonal atrás da mulher */}
+        <div className="absolute right-0 top-0 bottom-0 w-full lg:w-[48%] z-0 bg-primary overflow-hidden" 
+             style={{ clipPath: "polygon(15% 0, 100% 0, 100% 100%, 0% 100%)" }}>
+             {/* Geometria/Corte em branco para charme */}
+             <div className="absolute top-[15%] -left-[10%] h-[150%] w-[40px] rotate-12 bg-white/20"></div>
+             <div className="absolute bottom-[20%] -right-5 h-64 w-32 rotate-45 bg-white/10"></div>
         </div>
-        
-        {/* Degradê para o branco no lado esquerdo conforme pedido para ajudar na leitura */}
-        <div className="absolute left-0 top-0 bottom-0 w-full lg:w-[60%] z-0 bg-gradient-to-r from-white via-white/90 to-transparent mix-blend-overlay opacity-10"></div>
-        <div className="absolute left-0 top-0 bottom-0 w-full lg:w-[60%] z-0 bg-gradient-to-r from-[#252440] via-[#252440]/90 to-transparent"></div>
 
         <div className="relative z-10 mx-auto w-full max-w-7xl px-4 py-16 sm:px-6 lg:px-8">
           <div className="grid lg:grid-cols-2 gap-12 items-center">
             
             {/* Texto na Esquerda */}
             <div className="max-w-2xl relative z-20">
-              <h1 className="text-4xl font-extrabold leading-[1.1] tracking-tight text-white sm:text-5xl lg:text-[4.5rem] min-h-[4em] sm:min-h-[3.5em] lg:min-h-[3.5em] flex items-start drop-shadow-md">
+              <h1 className="text-4xl font-extrabold leading-[1.1] tracking-tight text-slate-900 sm:text-5xl lg:text-[4.5rem] min-h-[4em] sm:min-h-[3.5em] lg:min-h-[3.5em] flex items-start drop-shadow-sm">
                 <Typewriter />
               </h1>
-              <p className="mt-8 text-lg text-white/95 sm:text-xl font-medium max-w-lg drop-shadow">
+              <p className="mt-8 text-lg text-slate-700 sm:text-xl font-medium max-w-lg">
                 Apoiamos empresas a crescerem com gente: do RH operacional ao
                 estratégico, com soluções flexíveis, senioridade e método.
               </p>
               <div className="mt-10 flex flex-wrap gap-4">
                 <Link
                   to="/contato"
-                  className="inline-flex items-center gap-2 rounded-full bg-white px-8 py-4 text-sm font-bold text-primary shadow-lg transition hover:bg-gray-100 hover:scale-105"
+                  className="inline-flex items-center gap-2 rounded-full bg-primary px-8 py-4 text-sm font-bold text-primary-foreground shadow-lg transition hover:bg-primary/90 hover:scale-105"
                 >
                   Fale com um consultor <ArrowRight className="h-4 w-4" />
                 </Link>
                 <Link
                   to="/servicos"
-                  className="inline-flex items-center gap-2 rounded-full border-2 border-white bg-[#252440]/40 backdrop-blur-sm px-8 py-4 text-sm font-bold text-white transition hover:bg-white/20 hover:scale-105"
+                  className="inline-flex items-center gap-2 rounded-full border-2 border-primary/20 bg-white/80 backdrop-blur-sm px-8 py-4 text-sm font-bold text-primary transition hover:bg-primary/5 hover:scale-105"
                 >
                   Ver serviços
                 </Link>
@@ -336,20 +334,20 @@ function HomePage() {
             </div>
 
             {/* Imagem da mulher sobreposta criando forte efeito 3D/editorial */}
-            <div className="relative z-20 hidden lg:flex justify-end items-end h-full">
+            <div className="relative z-20 hidden lg:flex justify-center items-end h-full">
               {/* Sombra criativa no fundo para destacar a modelo */}
-              <div className="absolute -inset-10 bg-black/20 rounded-full blur-3xl z-0 transform translate-y-10 translate-x-10"></div>
+              <div className="absolute -inset-10 bg-black/10 rounded-full blur-3xl z-0 transform translate-y-10 translate-x-10"></div>
               <img 
                 src="/muhlher-transparente-hero.png" 
                 alt="Profissional de RH Pensecom" 
-                className="relative z-10 w-full max-w-[600px] object-contain drop-shadow-2xl transform scale-110 translate-y-8 origin-bottom pointer-events-none"
+                className="relative z-10 w-full max-w-[550px] object-contain drop-shadow-2xl transform scale-110 translate-y-12 origin-bottom pointer-events-none"
               />
             </div>
           </div>
         </div>
         
         {/* Mobile image */}
-        <div className="lg:hidden absolute bottom-0 right-[-10%] z-0 opacity-50 pointer-events-none">
+        <div className="lg:hidden absolute bottom-0 right-[-10%] z-0 opacity-80 pointer-events-none">
            <img 
               src="/muhlher-transparente-hero.png" 
               alt="Profissional de RH Pensecom" 
