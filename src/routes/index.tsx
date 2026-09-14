@@ -1,3 +1,4 @@
+import "./hero.css";
 import { cn } from "@/lib/utils";
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { useEffect, useRef, useState } from "react";
@@ -47,46 +48,52 @@ const clientLogos = [
   { src: client7.url, alt: "JHM Motores" },
 ];
 
+const typewriterTexts = [
+  "Empresas são feitas de pessoas",
+  "Pense com o coração. Pensecom."
+];
+
 function Typewriter() {
-  const texts = [
-    "Empresas são feitas de pessoas.",
-    "Pense com o coração.",
-    "Pensecom."
-  ];
-  const [text, setText] = useState("");
+  const [mounted, setMounted] = useState(false);
+  const [text, setText] = useState(typewriterTexts[0]);
   const [isDeleting, setIsDeleting] = useState(false);
   const [loopNum, setLoopNum] = useState(0);
+  const [reducedMotion, setReducedMotion] = useState(false);
 
   useEffect(() => {
-    let timeoutId: NodeJS.Timeout;
-    const handleType = () => {
-      const currentText = texts[loopNum % texts.length];
-      if (isDeleting) {
-        setText(currentText.substring(0, text.length - 1));
-      } else {
-        setText(currentText.substring(0, text.length + 1));
-      }
+    setMounted(true);
+    const media = window.matchMedia("(prefers-reduced-motion: reduce)");
+    const update = () => setReducedMotion(media.matches);
+    update();
+    media.addEventListener("change", update);
+    return () => media.removeEventListener("change", update);
+  }, []);
 
-      let typeSpeed = isDeleting ? 30 : 70;
-
-      if (!isDeleting && text === currentText) {
-        typeSpeed = 1500;
+  useEffect(() => {
+    if (!mounted || reducedMotion) return;
+    const currentText = typewriterTexts[loopNum];
+    const complete = !isDeleting && text === currentText;
+    const delay = complete ? 3000 : isDeleting ? 40 : 90;
+    // One timer per transition: state changes only after the delay.
+    const timeoutId = window.setTimeout(() => {
+      if (complete) {
         setIsDeleting(true);
-      } else if (isDeleting && text === "") {
+        setText(currentText.slice(0, -1));
+      } else if (isDeleting && text.length <= 1) {
+        setText("");
         setIsDeleting(false);
-        setLoopNum(loopNum + 1);
-        typeSpeed = 300;
+        setLoopNum((loopNum + 1) % typewriterTexts.length);
+      } else {
+        setText(currentText.slice(0, text.length + (isDeleting ? -1 : 1)));
       }
-      timeoutId = setTimeout(handleType, typeSpeed);
-    };
-    timeoutId = setTimeout(handleType, 50);
-    return () => clearTimeout(timeoutId);
-  }, [text, isDeleting, loopNum]);
+    }, delay);
+    return () => window.clearTimeout(timeoutId);
+  }, [mounted, text, isDeleting, loopNum, reducedMotion]);
 
   return (
-    <span className="inline-flex min-h-[1.5em] items-center">
-      {text}
-      <span className="animate-pulse ml-1 text-white">|</span>
+    <span className="inline-block min-h-[1.5em]" aria-label={typewriterTexts.join(". ")}>
+      <span data-typewriter-text aria-hidden="true">{!mounted || reducedMotion ? typewriterTexts[0] : text}</span>
+      <span aria-hidden="true" className="animate-pulse motion-reduce:animate-none ml-1 text-white">|</span>
     </span>
   );
 }
@@ -295,25 +302,21 @@ function HomePage() {
   return (
     <SiteLayout>
       {/* HERO */}
-      <section className="relative flex min-h-[85vh] lg:min-h-[90vh] items-center overflow-hidden bg-primary pt-24">
+      <section className="home-hero bg-primary">
         
-        {/* Geometria/Corte em branco para charme */}
-        <div className="absolute top-[15%] left-[40%] h-[150%] w-[40px] rotate-12 bg-white/5 pointer-events-none"></div>
-        <div className="absolute bottom-[20%] right-[-5%] h-64 w-32 rotate-45 bg-white/5 pointer-events-none"></div>
-
-        <div className="relative z-10 mx-auto w-full max-w-7xl px-4 py-16 sm:px-6 lg:px-8">
-          <div className="grid lg:grid-cols-2 gap-12 items-center">
+        <div className="hero-container mx-auto w-full max-w-7xl px-4 sm:px-6 lg:px-8">
+          <div className="hero-grid">
             
             {/* Texto na Esquerda */}
-            <div className="max-w-2xl relative z-20">
-              <h1 className="text-4xl font-extrabold leading-[1.1] tracking-tight text-white sm:text-5xl lg:text-[4.5rem] min-h-[4em] sm:min-h-[3.5em] lg:min-h-[3.5em] flex items-start drop-shadow-sm">
+            <div className="hero-copy">
+              <h1 className="hero-title font-extrabold tracking-tight text-white">
                 <Typewriter />
               </h1>
-              <p className="mt-8 text-lg text-white/90 sm:text-xl font-medium max-w-lg">
+              <p className="hero-description text-white font-medium max-w-lg">
                 Apoiamos empresas a crescerem com gente: do RH operacional ao
                 estratégico, com soluções flexíveis, senioridade e método.
               </p>
-              <div className="mt-10 flex flex-wrap gap-4">
+              <div className="hero-actions flex flex-wrap gap-3">
                 <Link
                   to="/contato"
                   className="inline-flex items-center gap-2 rounded-full bg-white px-8 py-4 text-sm font-bold text-primary shadow-lg transition hover:bg-white/90 hover:scale-105"
@@ -330,26 +333,17 @@ function HomePage() {
             </div>
 
             {/* Imagem da mulher sobreposta criando forte efeito 3D/editorial */}
-            <div className="relative z-20 hidden lg:flex justify-center items-end h-full">
-              {/* Sombra criativa no fundo para destacar a modelo */}
-              <div className="absolute -inset-10 bg-black/10 rounded-full blur-3xl z-0 transform translate-y-10 translate-x-10"></div>
+            <div className="hero-portrait">
               <img 
                 src="/muhlher-transparente-hero.png" 
                 alt="Profissional de RH Pensecom" 
-                className="relative z-10 w-full max-w-[550px] object-contain drop-shadow-2xl transform scale-110 translate-y-12 origin-bottom pointer-events-none"
+                className="hero-photo object-contain pointer-events-none"
               />
             </div>
           </div>
         </div>
         
-        {/* Mobile image */}
-        <div className="lg:hidden absolute bottom-0 right-[-10%] z-0 opacity-80 pointer-events-none">
-           <img 
-              src="/muhlher-transparente-hero.png" 
-              alt="Profissional de RH Pensecom" 
-              className="w-[350px] object-contain drop-shadow-2xl"
-            />
-        </div>
+
       </section>
 
       {/* STATS */}
