@@ -53,26 +53,18 @@ const typewriterTexts = [
   "Pense com o coração. Pensecom."
 ];
 
-function Typewriter({
-  reducedMotion,
-  optInAnimation
-}: {
-  reducedMotion: boolean;
-  optInAnimation: boolean;
-}) {
+function Typewriter() {
   const [mounted, setMounted] = useState(false);
   const [text, setText] = useState("");
   const [isDeleting, setIsDeleting] = useState(false);
   const [loopNum, setLoopNum] = useState(0);
-
-  const isStatic = reducedMotion && !optInAnimation;
 
   useEffect(() => {
     setMounted(true);
   }, []);
 
   useEffect(() => {
-    if (!mounted || isStatic) return;
+    if (!mounted) return;
     const currentText = typewriterTexts[loopNum];
     const complete = !isDeleting && text === currentText;
     const delay = complete ? 3000 : isDeleting ? 40 : 90;
@@ -90,14 +82,14 @@ function Typewriter({
       }
     }, delay);
     return () => window.clearTimeout(timeoutId);
-  }, [mounted, text, isDeleting, loopNum, isStatic]);
+  }, [mounted, text, isDeleting, loopNum]);
 
-  const displayText = (isStatic && text === "") ? typewriterTexts[0] : text;
-  const cursorClass = isStatic ? "ml-1 text-white" : "ml-1 text-white animate-pulse";
+  const displayText = text;
+  const cursorClass = "ml-1 text-white animate-pulse";
 
   return (
     <span className="inline-block min-h-[1.5em]" aria-label={typewriterTexts.join(". ")}>
-      <span data-typewriter-text aria-hidden="true">{mounted ? displayText : typewriterTexts[0]}</span>
+      <span data-typewriter-text aria-hidden="true">{mounted ? displayText : ""}</span>
       <span aria-hidden="true" className={cursorClass}>|</span>
     </span>
   );
@@ -288,16 +280,6 @@ const testimonials = [
 function HomePage() {
   const statsRef = useRef<HTMLElement | null>(null);
   const [statsVisible, setStatsVisible] = useState(false);
-  const [reducedMotion, setReducedMotion] = useState(false);
-  const [optInAnimation, setOptInAnimation] = useState(false);
-
-  useEffect(() => {
-    const media = window.matchMedia("(prefers-reduced-motion: reduce)");
-    const update = () => setReducedMotion(media.matches);
-    update();
-    media.addEventListener("change", update);
-    return () => media.removeEventListener("change", update);
-  }, []);
 
   useEffect(() => {
     const el = statsRef.current;
@@ -325,19 +307,8 @@ function HomePage() {
             {/* Texto na Esquerda */}
             <div className="hero-copy">
               <h1 className="hero-title font-extrabold tracking-tight text-white">
-                <Typewriter reducedMotion={reducedMotion} optInAnimation={optInAnimation} />
+                <Typewriter />
               </h1>
-              {reducedMotion && (
-                <div className="mb-4">
-                  <button
-                    onClick={() => setOptInAnimation(!optInAnimation)}
-                    className="text-xs font-semibold text-white/80 hover:text-white underline focus-visible:outline-white focus-visible:ring-2 focus-visible:ring-white rounded px-1 py-0.5"
-                    aria-pressed={optInAnimation}
-                  >
-                    {optInAnimation ? "Pausar animação" : "Ativar animação"}
-                  </button>
-                </div>
-              )}
               <p className="hero-description text-white font-medium max-w-lg">
                 Apoiamos empresas a crescerem com gente: do RH operacional ao
                 estratégico, com soluções flexíveis, senioridade e método.
