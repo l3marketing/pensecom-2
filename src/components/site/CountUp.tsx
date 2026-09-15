@@ -46,14 +46,7 @@ export function CountUp({
     }
     if (trigger === true) {
       if (startedRef.current) return;
-      const prefersReduced =
-        typeof window !== "undefined" &&
-        window.matchMedia?.("(prefers-reduced-motion: reduce)").matches;
-      if (prefersReduced) {
-        setValue(end);
-        startedRef.current = true;
-        return;
-      }
+      
       startedRef.current = true;
       const startTime = performance.now();
       const tick = (now: number) => {
@@ -79,17 +72,9 @@ export function CountUp({
     const el = ref.current;
     if (!el) return;
 
-    const prefersReduced =
-      typeof window !== "undefined" &&
-      window.matchMedia?.("(prefers-reduced-motion: reduce)").matches;
-
     const run = () => {
       if (startedRef.current) return;
       startedRef.current = true;
-      if (prefersReduced) {
-        setValue(end);
-        return;
-      }
       const startTime = performance.now();
       const tick = (now: number) => {
         const elapsed = now - startTime;

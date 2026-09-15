@@ -24,6 +24,7 @@ import {
 } from "lucide-react";
 import { SiteLayout } from "@/components/site/SiteLayout";
 import { CountUp } from "@/components/site/CountUp";
+import { AnimatedMap } from "@/components/site/AnimatedMap";
 import { services } from "@/lib/services";
 import { posts } from "@/lib/blog";
 import heroImg from "@/assets/hero-team.jpg.asset.json";
@@ -357,12 +358,7 @@ function HomePage() {
       <section ref={statsRef} className="border-y border-border bg-background">
         <div className="mx-auto grid max-w-7xl items-center gap-8 px-4 py-14 sm:px-6 md:flex md:justify-center md:gap-8 lg:px-8 lg:py-20">
           <div className="flex justify-center">
-            <img
-              src={mapaBrasil.url}
-              alt="Mapa do Brasil destacado na América do Sul"
-              className="w-64 max-w-full sm:w-80 md:w-96 lg:w-[28rem]"
-              loading="lazy"
-            />
+            <AnimatedMap />
           </div>
 
           <div className="text-center md:text-left">
