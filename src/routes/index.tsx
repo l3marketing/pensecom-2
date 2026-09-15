@@ -53,28 +53,30 @@ const typewriterTexts = [
   "Pense com o coração. Pensecom."
 ];
 
-function Typewriter() {
+function Typewriter({
+  reducedMotion,
+  optInAnimation
+}: {
+  reducedMotion: boolean;
+  optInAnimation: boolean;
+}) {
   const [mounted, setMounted] = useState(false);
-  const [text, setText] = useState(typewriterTexts[0]);
+  const [text, setText] = useState("");
   const [isDeleting, setIsDeleting] = useState(false);
   const [loopNum, setLoopNum] = useState(0);
-  const [reducedMotion, setReducedMotion] = useState(false);
+
+  const isStatic = reducedMotion && !optInAnimation;
 
   useEffect(() => {
     setMounted(true);
-    const media = window.matchMedia("(prefers-reduced-motion: reduce)");
-    const update = () => setReducedMotion(media.matches);
-    update();
-    media.addEventListener("change", update);
-    return () => media.removeEventListener("change", update);
   }, []);
 
   useEffect(() => {
-    if (!mounted || reducedMotion) return;
+    if (!mounted || isStatic) return;
     const currentText = typewriterTexts[loopNum];
     const complete = !isDeleting && text === currentText;
     const delay = complete ? 3000 : isDeleting ? 40 : 90;
-    // One timer per transition: state changes only after the delay.
+    
     const timeoutId = window.setTimeout(() => {
       if (complete) {
         setIsDeleting(true);
@@ -88,12 +90,15 @@ function Typewriter() {
       }
     }, delay);
     return () => window.clearTimeout(timeoutId);
-  }, [mounted, text, isDeleting, loopNum, reducedMotion]);
+  }, [mounted, text, isDeleting, loopNum, isStatic]);
+
+  const displayText = (isStatic && text === "") ? typewriterTexts[0] : text;
+  const cursorClass = isStatic ? "ml-1 text-white" : "ml-1 text-white animate-pulse";
 
   return (
     <span className="inline-block min-h-[1.5em]" aria-label={typewriterTexts.join(". ")}>
-      <span data-typewriter-text aria-hidden="true">{!mounted || reducedMotion ? typewriterTexts[0] : text}</span>
-      <span aria-hidden="true" className="animate-pulse motion-reduce:animate-none ml-1 text-white">|</span>
+      <span data-typewriter-text aria-hidden="true">{mounted ? displayText : typewriterTexts[0]}</span>
+      <span aria-hidden="true" className={cursorClass}>|</span>
     </span>
   );
 }
@@ -283,6 +288,16 @@ const testimonials = [
 function HomePage() {
   const statsRef = useRef<HTMLElement | null>(null);
   const [statsVisible, setStatsVisible] = useState(false);
+  const [reducedMotion, setReducedMotion] = useState(false);
+  const [optInAnimation, setOptInAnimation] = useState(false);
+
+  useEffect(() => {
+    const media = window.matchMedia("(prefers-reduced-motion: reduce)");
+    const update = () => setReducedMotion(media.matches);
+    update();
+    media.addEventListener("change", update);
+    return () => media.removeEventListener("change", update);
+  }, []);
 
   useEffect(() => {
     const el = statsRef.current;
@@ -310,19 +325,32 @@ function HomePage() {
             {/* Texto na Esquerda */}
             <div className="hero-copy">
               <h1 className="hero-title font-extrabold tracking-tight text-white">
-                <Typewriter />
+                <Typewriter reducedMotion={reducedMotion} optInAnimation={optInAnimation} />
               </h1>
+              {reducedMotion && (
+                <div className="mb-4">
+                  <button
+                    onClick={() => setOptInAnimation(!optInAnimation)}
+                    className="text-xs font-semibold text-white/80 hover:text-white underline focus-visible:outline-white focus-visible:ring-2 focus-visible:ring-white rounded px-1 py-0.5"
+                    aria-pressed={optInAnimation}
+                  >
+                    {optInAnimation ? "Pausar animação" : "Ativar animação"}
+                  </button>
+                </div>
+              )}
               <p className="hero-description text-white font-medium max-w-lg">
                 Apoiamos empresas a crescerem com gente: do RH operacional ao
                 estratégico, com soluções flexíveis, senioridade e método.
               </p>
               <div className="hero-actions flex flex-wrap gap-3">
-                <Link
-                  to="/contato"
-                  className="inline-flex items-center gap-2 rounded-full bg-white px-8 py-4 text-sm font-bold text-primary shadow-lg transition hover:bg-white/90 hover:scale-105"
+                <a
+                  href="https://bookings.cloud.microsoft/book/AgendaExternaClientesRILDON@pensecom.com.br/s/6lkok0d-nkythkL3w9MzwA2?ismsaljsauthenabled"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="inline-flex items-center gap-2 rounded-full bg-white px-8 py-4 text-sm font-bold text-[#9a3412] shadow-lg transition hover:bg-white hover:scale-105 focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-white"
                 >
                   Fale com um consultor <ArrowRight className="h-4 w-4" />
-                </Link>
+                </a>
                 <Link
                   to="/servicos"
                   className="inline-flex items-center gap-2 rounded-full border-2 border-white/30 bg-white/10 backdrop-blur-sm px-8 py-4 text-sm font-bold text-white transition hover:bg-white/20 hover:scale-105"

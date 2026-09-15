@@ -62,7 +62,7 @@ export function Header() {
           </Link>
           <Link
             to="/contato"
-            className="inline-flex items-center justify-center rounded-full bg-primary px-5 py-2.5 text-sm font-semibold text-primary-foreground shadow-sm transition-all hover:bg-primary/90 hover:shadow-md"
+            className={cn("inline-flex items-center justify-center rounded-full px-5 py-2.5 text-sm font-semibold shadow-sm transition-all hover:shadow-md focus-visible:outline-2 focus-visible:outline-offset-4", isHome ? "bg-white text-[#9a3412] hover:bg-white focus-visible:outline-white" : "bg-primary text-primary-foreground hover:bg-primary/90")}
           >
             Fale com a gente
           </Link>
@@ -109,7 +109,7 @@ export function Header() {
             <Link
               to="/contato"
               onClick={() => setOpen(false)}
-              className="mt-1 inline-flex items-center justify-center rounded-full bg-primary px-5 py-2.5 text-sm font-semibold text-primary-foreground"
+              className={cn("mt-1 inline-flex items-center justify-center rounded-full px-5 py-2.5 text-sm font-semibold", isHome ? "bg-white text-[#9a3412] border border-[#9a3412]" : "bg-primary text-primary-foreground")}
             >
               Fale com a gente
             </Link>
