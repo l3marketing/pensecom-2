@@ -84,12 +84,11 @@ function Typewriter() {
     return () => window.clearTimeout(timeoutId);
   }, [mounted, text, isDeleting, loopNum]);
 
-  const displayText = text;
   const cursorClass = "ml-1 text-white animate-pulse";
 
   return (
     <span className="inline-block min-h-[1.5em]" aria-label={typewriterTexts.join(". ")}>
-      <span data-typewriter-text aria-hidden="true">{mounted ? displayText : ""}</span>
+      <span data-typewriter-text aria-hidden="true">{mounted ? text : ""}</span>
       <span aria-hidden="true" className={cursorClass}>|</span>
     </span>
   );
