@@ -84,15 +84,22 @@ function Typewriter() {
     return () => window.clearTimeout(timeoutId);
   }, [mounted, text, isDeleting, loopNum]);
 
-  const cursorClass = "ml-1 text-white animate-pulse";
+const currentFullText = typewriterTexts[loopNum];
+  const typedText = mounted ? text : "";
+  const untypedText = mounted ? currentFullText.slice(text.length) : currentFullText;
 
   return (
     <span className="inline-block min-h-[1.5em]" aria-label={typewriterTexts.join(". ")}>
-      <span data-typewriter-text aria-hidden="true">{mounted ? text : ""}</span>
-      <span aria-hidden="true" className={cursorClass}>|</span>
+      <span data-typewriter-text aria-hidden="true">
+        <span>{typedText}</span>
+        <span aria-hidden="true" className="text-white animate-pulse" style={{ margin: "0 -0.1em" }}>|</span>
+        <span className="opacity-0">{untypedText}</span>
+      </span>
     </span>
   );
 }
+
+
 
 export const Route = createFileRoute("/")({
   head: () => ({
