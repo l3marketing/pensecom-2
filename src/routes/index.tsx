@@ -92,12 +92,14 @@ const currentFullText = typewriterTexts[loopNum];
     <span className="inline-block min-h-[1.5em]" aria-label={typewriterTexts.join(". ")}>
       <span data-typewriter-text aria-hidden="true">
         <span>{typedText}</span>
-        <span aria-hidden="true" className="text-white animate-pulse" style={{ margin: "0 -0.1em" }}>|</span>
+        {/* O cursor como 'absolute' sem top/left fica na posição exata do DOM sem ocupar espaço e empurrar a quebra de linha */}
+        <span aria-hidden="true" className="absolute text-white animate-pulse" style={{ marginTop: "-0.05em" }}>|</span>
         <span className="opacity-0">{untypedText}</span>
       </span>
     </span>
   );
 }
+
 
 
 
